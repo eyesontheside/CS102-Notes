@@ -14,6 +14,7 @@ int AddCard(string, int);
 int main() {
 
     int seed, num_games, player, dealer;
+    int i;
     string name;
     char response;
 
