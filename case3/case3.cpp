@@ -14,9 +14,10 @@ int AddCard(string, int);
 int main() {
 
     int seed, num_games, player, dealer;
-    int i;
+    int i, player_count=0, dealer_count=0;
     string name;
     char response;
+    bool bust;
 
     cout << "Enter a seed value for the random number generator: ";
     cin >> seed;
@@ -25,35 +26,78 @@ int main() {
     cout << "Enter your name: ";
     cin >> name;
 
-    cout << "How many games do you want to play? ";
+    cout << name << ", how many hands would you like to play?";
     cin >> num_games;
+
+    cout << endl;
 
     for(i = 0; i < num_games; i++) {
 
+        bust = false;
+
         player = GenerateHand(name);
+
+        cout << endl;
+
         dealer = GenerateHand("Dealer");
 
-        cout << "Would you like another card? (y/n) ";
+        cout << endl;
+
+        cout << name << ", do you want to draw another card? (y/n)";
         cin >> response;
 
-        while(response == 'y' && player < 21) {
+        cout << endl;
+
+        // draw a card for player until they request to stop
+        while(response == 'y') {
 
             player = AddCard(name, player);
-            cout << "Would you like to draw another card? (y/n) ";
-            cin >> response;
 
+            if(player <= 21) {
+                cout << name << ", do you want to draw another card? (y/n)";
+                cin >> response;
+                cout << endl;
+            }
+            else {
+                bust = true;
+                break;
+            }
+             
         }
 
-        if(player <= 21) {
-            while(dealer <= 16) {
+        if(!bust) {
+            while(dealer < 17) {
+
                 dealer = AddCard("Dealer", dealer);
+
             }
         }
-        else {
-            cout << "test" << endl;
+
+
+        cout << endl << endl;
+        cout << "The Result" << endl;
+        cout << name << ": has " << player << " points" << endl;
+        cout << "Dealer: has " << dealer << " points" << endl;
+
+        if(bust) {
+            cout << name << ": lost" << endl;
+            dealer_count += 1;
         }
-       
-    } 
+        else if(player > dealer || dealer > 21) {
+            cout << name << ": win!" << endl << endl;
+            player_count += 1;
+        }
+        else {
+            cout << name << ": lost" << endl;
+            dealer_count += 1;
+        }
+
+
+    }
+
+    cout << "The Recap" << endl;
+    cout << name << " won " << player_count << " games" << endl;
+    cout << "Dealer won " << dealer_count << " games" << endl;
 }
 
 // Background function for drawing a card. Returns integer value of card.
@@ -66,8 +110,6 @@ int DrawCard() {
     y = x - ((x - 36) * (x / 36));
 
     card = (y / 4) + 1;
-
-    cout << "Card is " << x << " with a value of " << card << endl;
 
     return card;
 
@@ -82,9 +124,9 @@ int GenerateHand(string name) {
     card_2 = DrawCard();
     total = card_1 + card_2;
 
-    cout << name << " first card is a " << card_1 << endl;
-    cout << name << " second card is a " << card_2 << endl;
-    cout << name << " total points are " << total << endl;
+    cout << name << ": first card is a " << card_1 << endl;
+    cout << name << ": second card is a " << card_2 << endl;
+    cout << name << ": total points are " << total << endl;
 
     return total;
     
@@ -98,7 +140,9 @@ int AddCard(string name, int current_total) {
     new_card = DrawCard();
     new_total = new_card + current_total;
 
-    cout << name << " drew a " << new_card << endl;
-    cout << name << " total points are " << new_total << endl;
+    cout << name << ": drew a " << new_card << endl;
+    cout << name << ": total points are " << new_total << endl;
+
+    return new_total;
 
 }
