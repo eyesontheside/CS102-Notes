@@ -13,12 +13,13 @@ int AddCard(string, int);
 
 int main() {
 
-    int seed, num_games, player, dealer;
-    int i, player_count=0, dealer_count=0;
-    string name;
+    int seed, num_games, i;
+    int player, dealer, player_count=0, dealer_count=0;
     char response;
+    string name;
     bool bust;
 
+    // prompt user to seed random number generator
     cout << "Enter a seed value for the random number generator: ";
     cin >> seed;
     srand(seed);
@@ -29,22 +30,24 @@ int main() {
     cout << name << ", how many hands would you like to play?";
     cin >> num_games;
 
+    // loop to play "num_games" games
     for(i = 0; i < num_games; i++) {
 
         bust = false;
 
         cout << endl;
 
+        // generate a hand for player and dealer
         player = GenerateHand(name);
         cout << endl;
 
         dealer = GenerateHand("Dealer");
         cout << endl;
        
+        // draw a card for player until they request to stop
         cout << name << ", do you want to draw another card? (y/n)";
         cin >> response;
 
-        // draw a card for player until they request to stop
         while(response == 'y') {
 
             cout << endl;
