@@ -62,6 +62,7 @@ int main() {
              
         }
 
+        // if the player did not bust then have the dealer draw until they have 17 points or more
         if(!bust) {
             while(dealer < 17) {
 
@@ -70,12 +71,13 @@ int main() {
             }
         }
 
-
+        // print the results of this game
         cout << endl << endl;
         cout << "The Result" << endl;
         cout << name << ": has " << player << " points" << endl;
         cout << "Dealer: has " << dealer << " points" << endl;
 
+        // determine winner
         if(bust) {
             cout << name << ": lost" << endl;
             dealer_count += 1;
@@ -92,6 +94,7 @@ int main() {
 
     }
 
+    // print the recap for every round
     cout << "The Recap" << endl;
     cout << name << " won " << player_count << " games" << endl;
     cout << "Dealer won " << dealer_count << " games" << endl;
