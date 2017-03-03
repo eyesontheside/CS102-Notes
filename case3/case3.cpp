@@ -29,21 +29,16 @@ int main() {
     cout << name << ", how many hands would you like to play?";
     cin >> num_games;
 
-    cout << endl;
-
     for(i = 0; i < num_games; i++) {
 
         bust = false;
 
         player = GenerateHand(name);
-        cout << endl;
 
         dealer = GenerateHand("Dealer");
-        cout << endl;
-
+       
         cout << name << ", do you want to draw another card? (y/n)";
         cin >> response;
-        cout << endl;
 
         // draw a card for player until they request to stop
         while(response == 'y') {
@@ -53,7 +48,6 @@ int main() {
             if(player <= 21) {
                 cout << name << ", do you want to draw another card? (y/n)";
                 cin >> response;
-                cout << endl;
             }
             else {
                 bust = true;
@@ -72,7 +66,6 @@ int main() {
         }
 
         // print the results of this game
-        cout << endl << endl;
         cout << "The Result" << endl;
         cout << name << ": has " << player << " points" << endl;
         cout << "Dealer: has " << dealer << " points" << endl;
@@ -83,7 +76,7 @@ int main() {
             dealer_count += 1;
         }
         else if(player > dealer || dealer > 21) {
-            cout << name << ": win!" << endl << endl;
+            cout << name << ": win!" << endl; 
             player_count += 1;
         }
         else {
