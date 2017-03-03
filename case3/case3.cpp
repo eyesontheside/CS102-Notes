@@ -36,16 +36,13 @@ int main() {
         bust = false;
 
         player = GenerateHand(name);
-
         cout << endl;
 
         dealer = GenerateHand("Dealer");
-
         cout << endl;
 
         cout << name << ", do you want to draw another card? (y/n)";
         cin >> response;
-
         cout << endl;
 
         // draw a card for player until they request to stop
