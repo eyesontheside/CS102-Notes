@@ -33,9 +33,13 @@ int main() {
 
         bust = false;
 
+        cout << endl;
+
         player = GenerateHand(name);
+        cout << endl;
 
         dealer = GenerateHand("Dealer");
+        cout << endl;
        
         cout << name << ", do you want to draw another card? (y/n)";
         cin >> response;
@@ -43,6 +47,7 @@ int main() {
         // draw a card for player until they request to stop
         while(response == 'y') {
 
+            cout << endl;
             player = AddCard(name, player);
 
             if(player <= 21) {
@@ -56,13 +61,17 @@ int main() {
              
         }
 
+        cout << endl;
+
         // if the player did not bust then have the dealer draw until they have 17 points or more
         if(!bust) {
             while(dealer < 17) {
 
                 dealer = AddCard("Dealer", dealer);
+                cout << endl; 
 
             }
+            cout << endl;
         }
 
         // print the results of this game
@@ -72,7 +81,7 @@ int main() {
 
         // determine winner
         if(bust) {
-            cout << name << ": lost" << endl;
+            cout << name << ": lose" << endl;
             dealer_count += 1;
         }
         else if(player > dealer || dealer > 21) {
@@ -80,7 +89,7 @@ int main() {
             player_count += 1;
         }
         else {
-            cout << name << ": lost" << endl;
+            cout << name << ": lose" << endl;
             dealer_count += 1;
         }
 
@@ -88,9 +97,10 @@ int main() {
     }
 
     // print the recap for every round
+    cout << endl;
     cout << "The Recap" << endl;
-    cout << name << " won " << player_count << " games" << endl;
-    cout << "Dealer won " << dealer_count << " games" << endl;
+    cout << name << ": won " << player_count << " games" << endl;
+    cout << "Dealer: won " << dealer_count << " games" << endl;
 }
 
 // Background function for drawing a card. Returns integer value of card.
