@@ -5,6 +5,7 @@
 
 using namespace std;
 
+// size of a deck of cards
 const int DECKSIZE = 52;
 
 int DrawCard();
