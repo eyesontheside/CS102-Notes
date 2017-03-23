@@ -1,0 +1,3 @@
+string = ""
+string += Getword(x,x);
+string += Getword(y,y);
