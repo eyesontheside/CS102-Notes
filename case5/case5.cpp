@@ -7,9 +7,9 @@
 
 using namespace std;
 
+void PrintLine(string, int, int, int);
 string Lower(string);
 int SearchDistrict(string district_name, const vector<string> &);
-
 
 int main(int argc, char *argv[]) {
 
@@ -17,7 +17,7 @@ int main(int argc, char *argv[]) {
     istringstream sin;
     string line, district_name;
     double nonv_crime, v_crime, d_crime;
-    int num_lines=0, size;
+    int i, num_lines=0, size;
     vector<string> district_names;
     vector<int> nonviolent_crimes, violent_crimes, domestic_crimes;
 
@@ -30,7 +30,7 @@ int main(int argc, char *argv[]) {
     // convert command line argument into an integer
     sin.str(argv[2]);
     sin >> size;
-    sin.clear()
+    sin.clear();
 
     // open and check file 
     fin.open(argv[1]);
@@ -58,6 +58,35 @@ int main(int argc, char *argv[]) {
 
     fin.close();
 
+    // if user prompts a number larger than file size print full file
+    if(size > district_names.size())
+        size = district_names.size();
+
+    // print header information
+    cout << "Top " << size << " Crime Ridden Areas In Baltimore" << endl;
+    PrintLine("District", -1, -1, -1);
+    for(i=0; i<size; i++) {
+        PrintLine(district_names[i], nonviolent_crimes[i], violent_crimes[i], domestic_crimes[i]);
+    }
+
+}
+
+
+void PrintLine(string district, int nonviolent, int violent, int domestic) {
+
+    if(nonviolent == -1 && violent == -1 && domestic == -1) {
+        cout << left << setw(26) << district;
+        cout << left << setw(5) << "VC";
+        cout << left << setw(5) << "DV";
+        cout << left << setw(5) << "NVC" << endl << endl;
+    }
+    else {
+        cout << left << setw(26) << district;
+        cout << left << setw(5) << violent;
+        cout << left << setw(5) << domestic;
+        cout << left << setw(5) << nonviolent << endl;
+    }
+
 }
 
 
@@ -74,6 +103,7 @@ string Lower(string str) {
     return str;
 
 }
+
 
 // search for index of district name while ignoring case
 int SearchDistrict(string district_name, const vector<string> & dist_vec) {
