@@ -8,18 +8,21 @@
 using namespace std;
 
 void PrintLine(string, int, int, int);
-string Lower(string);
+string FormatString(string);
 int SearchDistrict(string district_name, const vector<string> &);
+string min(vector<int> &, vector<int> &);
+string max(vector<int> &, vector<int> &);
+void PoliticalSummary(vector<string> &, vector<int> &, vector<int> &, vector<int> &, vector<int> &);
 
 int main(int argc, char *argv[]) {
 
     ifstream fin;
     istringstream sin;
-    string line, district_name;
+    string line, district_name, response;
     double nonv_crime, v_crime, d_crime;
-    int i, num_lines=0, size;
+    int i, num_lines=0, size, index;
     vector<string> district_names;
-    vector<int> nonviolent_crimes, violent_crimes, domestic_crimes;
+    vector<int> nonviolent_crimes, violent_crimes, domestic_crimes, indexes;
 
     // check to see if user entered the correct command line arguments
     if(argc != 3) {
@@ -65,9 +68,31 @@ int main(int argc, char *argv[]) {
     // print header information
     cout << "Top " << size << " Crime Ridden Areas In Baltimore" << endl;
     PrintLine("District", -1, -1, -1);
+    cout << endl;
     for(i=0; i<size; i++) {
         PrintLine(district_names[i], nonviolent_crimes[i], violent_crimes[i], domestic_crimes[i]);
     }
+
+    cout << endl << "Enter a district: ";
+    cin >> response;
+    response = FormatString(response);
+    while(response != "Done") {
+        index = SearchDistrict(response, district_names);
+        PrintLine("", -1, -1, -1);
+        if(index != -1) {
+            PrintLine(response, nonviolent_crimes[index], violent_crimes[index], domestic_crimes[index]);
+            indexes.push_back(index);
+        }
+        else
+            PrintLine(response, -2, -2, -2);
+
+        cout << endl << "Enter a district: ";
+        cin >> response;
+        response = FormatString(response);
+
+    }
+
+    PoliticalSummary(district_names, nonviolent_crimes, violent_crimes, domestic_crimes, indexes);
 
 }
 
@@ -78,7 +103,13 @@ void PrintLine(string district, int nonviolent, int violent, int domestic) {
         cout << left << setw(26) << district;
         cout << left << setw(5) << "VC";
         cout << left << setw(5) << "DV";
-        cout << left << setw(5) << "NVC" << endl << endl;
+        cout << left << setw(5) << "NVC" << endl;
+    }
+    else if(nonviolent == -2 && violent == -2 && domestic == -2) {
+        cout << left << setw(26) << district;
+        cout << left << setw(5) << "----";
+        cout << left << setw(5) << "----";
+        cout << left << setw(5) << "----" << endl;
     }
     else {
         cout << left << setw(26) << district;
@@ -90,13 +121,14 @@ void PrintLine(string district, int nonviolent, int violent, int domestic) {
 }
 
 
-// convert string to all lowercase
-string Lower(string str) {
+// make every letter lowercase except the first 
+string FormatString(string str) {
 
     int i, size;
+    str[0] = toupper(str[0]);
     size = str.length();
 
-    for(i=0; i<size; i++) {
+    for(i=1; i<size; i++) {
         str[i] = tolower(str[i]);
     }
 
@@ -111,11 +143,11 @@ int SearchDistrict(string district_name, const vector<string> & dist_vec) {
     int i, index=-1, size;
 
     size = dist_vec.size();
-    district_name = Lower(district_name);
+    district_name = FormatString(district_name);
 
     for(i=0; i<size; i++) {
 
-        if(district_name == Lower(dist_vec[i])) {
+        if(district_name == FormatString(dist_vec[i])) {
             index = i;
             break;
         }
@@ -123,5 +155,51 @@ int SearchDistrict(string district_name, const vector<string> & dist_vec) {
     }
 
     return index;
+
+}
+
+string min(vector<string> & names, vector<int> & crimes, vector<int> & indexes) {
+    int i, min, mindex, size=indexes.size();
+
+    mindex = indexes[0];
+    min = crimes[mindex];
+    for(i=1; i<size; i++) {
+        if(min > crimes[indexes[i]]) {
+            mindex = indexes[i];
+            min = crimes[mindex];
+        }
+    }
+
+    return names[mindex];
+
+}
+
+string max(vector<string> & names, vector<int> & crimes, vector<int> & indexes) {
+    int i, max, mindex, size=indexes.size();
+
+    mindex = indexes[0];
+    max = crimes[mindex];
+    for(i=1; i<size; i++) {
+        if(max < crimes[indexes[i]]) {
+            mindex = indexes[i];
+            max = crimes[mindex];
+        }
+    }
+
+    return names[mindex];
+
+}
+
+void PoliticalSummary(vector<string> & d_names, vector<int> & nonv_crimes, vector<int> & v_crimes, vector<int> & dom_crimes, vector<int> & indexes) {
+
+    cout << endl;
+    cout << "Highest Nonviolent Crime: " << max(d_names, nonv_crimes, indexes) << endl;
+    cout << "Lowest Nonviolent Crime : " << min(d_names, nonv_crimes, indexes) << endl << endl;
+
+    cout << "Highest Violent Crime: " << max(d_names, v_crimes, indexes) << endl;
+    cout << "Lowest Violent Crime : " << min(d_names, v_crimes, indexes) << endl << endl;
+
+    cout << "Highest Domestic Crime: " << max(d_names, dom_crimes, indexes) << endl;
+    cout << "Lowest Domestic Crime : " << min(d_names, dom_crimes, indexes) << endl << endl;
 
 }
