@@ -8,6 +8,7 @@
 using namespace std;
 
 void PrintLine(string, int, int, int);
+void PrintHeader(string, string, string, string);
 string FormatString(string);
 int SearchDistrict(string district_name, const vector<string> &);
 string min(vector<int> &, vector<int> &);
@@ -67,7 +68,7 @@ int main(int argc, char *argv[]) {
 
     // print header information
     cout << "Top " << size << " Crime Ridden Areas In Baltimore" << endl;
-    PrintLine("District", -1, -1, -1);
+    PrintHeader("District", "NVC", "VC", "DV");
     cout << endl;
     for(i=0; i<size; i++) {
         PrintLine(district_names[i], nonviolent_crimes[i], violent_crimes[i], domestic_crimes[i]);
@@ -78,13 +79,13 @@ int main(int argc, char *argv[]) {
     response = FormatString(response);
     while(response != "Done") {
         index = SearchDistrict(response, district_names);
-        PrintLine("", -1, -1, -1);
+        PrintHeader("", "NVC", "VC", "DV");
         if(index != -1) {
             PrintLine(response, nonviolent_crimes[index], violent_crimes[index], domestic_crimes[index]);
             indexes.push_back(index);
         }
         else
-            PrintLine(response, -2, -2, -2);
+            PrintHeader(response, "----", "----", "----");
 
         cout << endl << "Enter a district: ";
         cin >> response;
@@ -96,30 +97,25 @@ int main(int argc, char *argv[]) {
 
 }
 
-
+// prints formatted crime statistics
 void PrintLine(string district, int nonviolent, int violent, int domestic) {
 
-    if(nonviolent == -1 && violent == -1 && domestic == -1) {
-        cout << left << setw(26) << district;
-        cout << left << setw(5) << "VC";
-        cout << left << setw(5) << "DV";
-        cout << left << setw(5) << "NVC" << endl;
-    }
-    else if(nonviolent == -2 && violent == -2 && domestic == -2) {
-        cout << left << setw(26) << district;
-        cout << left << setw(5) << "----";
-        cout << left << setw(5) << "----";
-        cout << left << setw(5) << "----" << endl;
-    }
-    else {
-        cout << left << setw(26) << district;
-        cout << left << setw(5) << violent;
-        cout << left << setw(5) << domestic;
-        cout << left << setw(5) << nonviolent << endl;
-    }
+    cout << left << setw(26) << district;
+    cout << left << setw(5) << violent;
+    cout << left << setw(5) << domestic;
+    cout << left << setw(5) << nonviolent << endl;
 
 }
 
+// same functionality as PrintLine but this function will accept strings instead of ints
+void PrintHeader(string district, string nonviolent, string violent, string domestic) {
+
+    cout << left << setw(26) << district;
+    cout << left << setw(5) << violent;
+    cout << left << setw(5) << domestic;
+    cout << left << setw(5) << nonviolent << endl;
+
+}
 
 // make every letter lowercase except the first 
 string FormatString(string str) {
