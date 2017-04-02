@@ -1,3 +1,6 @@
+// Spencer Harper
+// Output data based off the crime statistics of Baltimore
+
 #include <iostream>
 #include <iomanip>
 #include <string>
@@ -70,10 +73,15 @@ int main(int argc, char *argv[]) {
     cout << "Top " << size << " Crime Ridden Areas In Baltimore" << endl;
     PrintHeader("District", "NVC", "VC", "DV");
     cout << endl;
+
+    // print the number of districts the user entered at the command line
     for(i=0; i<size; i++) {
         PrintLine(district_names[i], nonviolent_crimes[i], violent_crimes[i], domestic_crimes[i]);
     }
 
+    // prompt the user to enter distrits to get stats for that district
+    // if district does not exist print '----'
+    // continue asking until the user enters 'done'
     cout << endl << "Enter a district: ";
     cin >> response;
     response = FormatString(response);
@@ -93,6 +101,7 @@ int main(int argc, char *argv[]) {
 
     }
 
+    // print political summary of previous user requests
     PoliticalSummary(district_names, nonviolent_crimes, violent_crimes, domestic_crimes, indexes);
 
 }
@@ -154,6 +163,8 @@ int SearchDistrict(string district_name, const vector<string> & dist_vec) {
 
 }
 
+
+// find the minimum crime rate based off of given indexes
 string min(vector<string> & names, vector<int> & crimes, vector<int> & indexes) {
     int i, min, mindex, size=indexes.size();
 
@@ -170,6 +181,7 @@ string min(vector<string> & names, vector<int> & crimes, vector<int> & indexes) 
 
 }
 
+// find the maximum crime rate based off of given indexes
 string max(vector<string> & names, vector<int> & crimes, vector<int> & indexes) {
     int i, max, mindex, size=indexes.size();
 
@@ -186,6 +198,7 @@ string max(vector<string> & names, vector<int> & crimes, vector<int> & indexes) 
 
 }
 
+// print the highest and lowest crime rates for each type of crime using the min and max functions
 void PoliticalSummary(vector<string> & d_names, vector<int> & nonv_crimes, vector<int> & v_crimes, vector<int> & dom_crimes, vector<int> & indexes) {
 
     cout << endl;
